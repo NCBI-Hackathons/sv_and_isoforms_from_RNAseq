@@ -179,7 +179,7 @@ def max_seq_length(accessions):
 
 
 
-def normed(normfile):
+def normed(normfile, header=None):
   """ 
   normfile = MBase Run Group \n 1687 SRR309133 0 \n 1624 SRR309135 1 ...
   """
@@ -190,6 +190,9 @@ def normed(normfile):
     for line in fIn:
       if line:
         normthing.append(line.strip().split(None))
+  if header is not None:
+    for h in range(int(header)):
+      normthing.pop(0)
   if max([len(n) for n in normthing]) == 2: # All are same group
     print('All SRRs are the same group!')
     normthing = [[n[0], n[1], 1] for n in normthing] # All get group 1
@@ -246,17 +249,23 @@ def multi_control(accfilelist, normfile=None, outpdfname=None,
   hgrams = [populate_N(acc, seq_length) for acc in accession_list]
   # Normalize, if desired:
   if normfile is not None:
-    normstuff = normed(normfile) # [[#MBases, SRR, group], .... ]
+    normstuff = normed(normfile, header=1) # [[#MBases, SRR, group], .... ]
     if len(normstuff) != len(hgrams):
       print('Normstuff must be same length as accession files')
-      print('   and should line up (SRRs).'); return None
-    hgrams = [hgrams[i]/float(normstuff[i][0]) for i in range(len(hgrams))]
+      print('   and should line up (SRRs).'); #return None
+    hgrams = [[h[i]/float(normstuff[hgrams.index(h)][0]) for i in range(len(h))]
+              for h in hgrams]
+    # And re-normalize
+    maxmax = max([max(hg) for hg in hgrams])
+    hgrams = [[h[i]/float(maxmax) for i in range(len(h))]
+              for h in hgrams]
     groups = [n[2] for n in normstuff]
     srrs = [n[1] for n in normstuff] # Get srr names (maybe?)
   else: # hgrams is unchanged but we still want groups
     groups = [1 for i in hgrams]
   # Keep non-zero histograms
   keep = [i for i in range(len(hgrams)) if max(hgrams[i]) > 0.] 
+  print('Keeping %i / %i files' %(len(keep), len(groups)))
   hgrams, groups = [hgrams[k] for k in keep], [groups[k] for k in keep]
   # Plot the thing
   if graph == 'heatmap':

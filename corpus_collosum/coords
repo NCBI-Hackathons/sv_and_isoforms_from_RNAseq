@@ -1,0 +1,4 @@
+chr2:166845670-167005642
+
+ for i in `cat accession`; do echo $i; sam-dump chr2:166845670-167005642 > $i.sam; done
+

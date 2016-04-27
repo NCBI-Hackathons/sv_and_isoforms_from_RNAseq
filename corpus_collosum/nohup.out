@@ -1,0 +1,6 @@
+blastn_vdb -max_target_seqs 5000 -db SRR1603661 -query NM_001202435.1.fa -outfmt 6 -out SRR1603661.blastout
+blastn_vdb -max_target_seqs 5000 -db SRR1603662 -query NM_001202435.1.fa -outfmt 6 -out SRR1603662.blastout
+Warning: lcl|Query_1 gi|320461721|ref|NM_001202435.1|:1-8342 Homo sapiens sodium voltage-gated channel alpha subunit 1 (SCN1A), transcript variant 4, mRNA: Warning: GI or TI list filtering resulted in an empty database. 
+blastn_vdb -max_target_seqs 5000 -db SRR1603663 -query NM_001202435.1.fa -outfmt 6 -out SRR1603663.blastout
+blastn_vdb -max_target_seqs 5000 -db SRR1603664 -query NM_001202435.1.fa -outfmt 6 -out SRR1603664.blastout
+blastn_vdb -max_target_seqs 5000 -db SRR1603665 -query NM_001202435.1.fa -outfmt 6 -out SRR1603665.blastout
